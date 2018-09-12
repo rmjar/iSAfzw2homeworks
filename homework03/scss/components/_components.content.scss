@@ -1,0 +1,15 @@
+.c-main-content {
+    margin: 4em auto 0;
+    max-width: $layoutMaxWidth;
+    min-width: $minWidth;
+    display: grid;
+    grid-gap: $gap;
+    grid-template-columns: 4fr 1fr;
+    grid-template-areas: "main aside";
+    align-items: center;
+    font-family: $basicFontFace;
+}
+
+.c-content {
+    padding: 0.5em;
+}

@@ -1,0 +1,15 @@
+.c-navigation {
+    &__list {
+        list-style-type: none;
+        display: flex;
+    }
+
+    &__item {
+        padding: 0 1em;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: $linkColor
+    }
+}

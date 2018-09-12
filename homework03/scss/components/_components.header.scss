@@ -1,0 +1,26 @@
+.c-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    top: 0;
+    max-width: $layoutMaxWidth;
+    min-width: $minWidth;
+    width: 100%;
+    font-family: $basicFontFace;
+    background: $headerBackground;
+    color: $headerColor;
+
+
+    &__logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__nav {}
+}

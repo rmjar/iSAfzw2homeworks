@@ -1,0 +1,13 @@
+.c-heading {
+    &--primary {
+        font-size: $basicFontSize * 2;
+        padding: $basicPadding;
+        margin-bottom: $basicMargin;
+    }
+
+    &--secondary {
+        font-size: $basicFontSize * 1.5;
+        padding: $basicPadding;
+
+    }
+}

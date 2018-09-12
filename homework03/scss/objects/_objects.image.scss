@@ -1,0 +1,22 @@
+.o-image {
+
+    &__logo {
+        margin: 0;
+        padding: 0;
+    }
+
+    &__pic {
+        max-width: 3rem;
+        height: auto;
+    }
+
+    &__desc {
+        font-size: $basicFontSize * 0.8;
+    }
+
+    &--rounded {
+        border-radius: 8px;
+    }
+
+    &--centered {}
+}

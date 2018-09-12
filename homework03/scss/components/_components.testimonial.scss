@@ -1,0 +1,13 @@
+.c-testimonial {
+    &__image {
+        margin-bottom: $basicMargin;
+    }
+
+    &__desc {
+        text-align: justify;
+        padding: $basicPadding;
+        box-shadow: $shadowThicknes $shadowThicknes $shadowBlur $borderColor;
+
+
+    }
+}

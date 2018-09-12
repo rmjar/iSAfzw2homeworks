@@ -1,0 +1,37 @@
+.c-article {
+
+    border: $basicBorderWidth solid $borderColor;
+    box-shadow: $shadowThicknes $shadowThicknes $shadowBlur $borderColor;
+    
+    grid-area: main;
+
+    &__header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &__image {
+        display: flex;
+        align-items: center;
+    }
+
+    &__lead {
+        p {
+            padding: $basicPadding;
+            text-align: justify;
+        }
+    }
+
+    &__content {
+        p {
+            padding: $basicPadding;
+            text-align: justify;
+        }
+    }
+
+    &__meta {
+        text-align: right;
+        font-size: $basicFontSize * 0.8;
+    }
+}
