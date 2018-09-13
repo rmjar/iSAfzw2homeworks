@@ -1,4 +1,9 @@
 .c-testimonial {
+    text-align: right;
+    padding: $basicPadding * 2;
+    border: $basicBorderWidth solid $borderColor;
+    height: 100%;
+
     &__image {
         margin-bottom: $basicMargin;
     }
@@ -6,8 +11,5 @@
     &__desc {
         text-align: justify;
         padding: $basicPadding;
-        box-shadow: $shadowThicknes $shadowThicknes $shadowBlur $borderColor;
-
-
     }
 }

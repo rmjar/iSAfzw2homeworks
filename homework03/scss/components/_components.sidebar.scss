@@ -1,3 +1,5 @@
 .c-sidebar {
     grid-area: aside;
+    align-self: stretch;
+    margin: $basicMargin;
 }
