@@ -48,7 +48,8 @@ function hasOneByOneDigit(a) {
     var units = a % 10;
     var tens = Math.floor(a / 10) % 10;
     var hundreds = Math.floor(a / 100);
-    return (units - tens === 1) && (tens - hundreds === 1);
+    return (units - tens === 1) && (tens - hundreds === 1) ||
+        (units - tens === -1) && (tens - hundreds === -1);
 }
 
 function daysInMonth(month, year) {
