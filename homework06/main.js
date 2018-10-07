@@ -128,12 +128,12 @@ function sendMessage() {
     console.log(`Hello,${ageCondition} ${name}! You have ${this.messages} unread messages.`);
 }
 
-users.forEach( element => element.sendMessage = sendMessage);
-users.forEach( element => element.sendMessage());
+users.forEach(element => element.sendMessage = sendMessage);
+users.forEach(element => element.sendMessage());
 console.log("============================");
-const person1 = users.find(element => element.age < 30  && element.gender==="female");
-const person2 = users.find(element => element.age > 30 && element.gender==="male");
+const person1 = users.find(element => element.age < 30 && element.gender === "female");
+const person2 = users.find(element => element.age > 30 && element.gender === "male");
 
 const foundUsers = [];
 foundUsers.push(person1, person2);
-foundUsers.forEach( element => element.sendMessage());
+foundUsers.forEach(element => element.sendMessage());
