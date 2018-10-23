@@ -12,6 +12,7 @@ const store = {
       if (!foundItem) {
       todos.push(item);
       } else {
+        foundItem.checked = true;
         foundItem.category = item.category;
         foundItem.shops = item.shops;
       }
