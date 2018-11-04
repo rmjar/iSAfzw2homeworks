@@ -45,6 +45,7 @@ function Timer() {
     this.started = false;
     this.timerString = "00h 00:00:00";
     this.id = "timer" + this.startInterval;
+    this.prepareDOM();
     this.render();
 }
 
@@ -87,7 +88,8 @@ Timer.prototype = {
 
     render: function () {
         this.formatTimeString();
-        this.prepareDOM();
+        const element = document.getElementById(this.id);
+        element.innerText = this.timerString;
     },
 
     prepareDOM: function () {
@@ -104,10 +106,7 @@ Timer.prototype = {
             this.appendButton(this.reset, buttons);
             timers.appendChild(element);
             timers.appendChild(buttons);
-        } else {
-            element.innerText = "";
-        }
-        element.innerText = this.timerString;
+        } 
     },
 
     appendButton: function (fn, parent) {
