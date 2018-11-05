@@ -73,6 +73,19 @@ Timer.prototype = {
         this.currentInterval = 0;
     },
 
+    remove: function() {
+        this.stop();
+        const timers = document.getElementById("timers");
+        const element = document.getElementById(this.id);
+        if(element) {
+            const buttons = document.getElementById("buttons"+this.id);
+            timers.removeChild(buttons);
+            const element = document.getElementById(this.id);
+            timers.removeChild(element);
+            delete this;           
+        }
+    },
+
     formatTimeString: function () {
         let hours = Math.floor(this.currentInterval / (3600000));
         let minutes = Math.floor(this.currentInterval / 60000) % 60;
@@ -94,7 +107,6 @@ Timer.prototype = {
 
     prepareDOM: function () {
         const timers = document.getElementById("timers");
-
         let element = document.getElementById(this.id);
         if (!element) {
             element = document.createElement("div");
@@ -104,6 +116,7 @@ Timer.prototype = {
             this.appendButton(this.start, buttons);
             this.appendButton(this.stop, buttons);
             this.appendButton(this.reset, buttons);
+            this.appendButton(this.remove, buttons);
             timers.appendChild(element);
             timers.appendChild(buttons);
         } 

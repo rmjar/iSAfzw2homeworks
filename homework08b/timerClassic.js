@@ -11,17 +11,16 @@ function Timer() {
 
 Timer.prototype = {
 
-    calcCurtime: function() {
+    calcCurtime: function () {
         this.currentInterval = Date.now() - this.startInterval;
     },
 
     start: function () {
         this.startInterval = Date.now();
-        const that = this;
-        if (!that.interval) {
-            that.interval = setInterval(function () {
-                that.calcCurtime();
-                that.render();
+        if (!this.interval) {
+            this.interval = setInterval(() => {
+                this.calcCurtime();
+                this.render();
             }, 10);
         }
 
@@ -39,6 +38,19 @@ Timer.prototype = {
         this.startInterval = Date.now();
         this.currentInterval = 0;
         this.render();
+    },
+
+    remove: function() {
+        this.stop();
+        const timers = document.getElementById("timers");
+        const element = document.getElementById(this.id);
+        if(element) {
+            const buttons = document.getElementById("buttons"+this.id);
+            timers.removeChild(buttons);
+            const element = document.getElementById(this.id);
+            timers.removeChild(element);
+            delete this;           
+        }
     },
 
     formatTimeString: function () {
@@ -72,9 +84,10 @@ Timer.prototype = {
             this.appendButton(this.start, buttons);
             this.appendButton(this.stop, buttons);
             this.appendButton(this.reset, buttons);
+            this.appendButton(this.remove, buttons);
             timers.appendChild(element);
             timers.appendChild(buttons);
-        } 
+        }
     },
 
     appendButton: function (fn, parent) {
