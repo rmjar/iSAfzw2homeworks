@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/homework06/main.js"
+            "program": "${workspaceFolder}/homework06/sec.js"
         }
     ]
 }
