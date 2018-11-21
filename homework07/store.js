@@ -8,7 +8,14 @@ const store = {
 
     if (item.name !== '') {
       item.checked = false;
+      const foundItem = todos.find(x => x.name === item.name);
+      if (!foundItem) {
       todos.push(item);
+      } else {
+        foundItem.checked = true;
+        foundItem.category = item.category;
+        foundItem.shops = item.shops;
+      }
 
       this.setData('todos', todos);
       appStart(todos);
@@ -154,7 +161,6 @@ const store = {
   // name to nazwa kategorii, a count to liczba produktów z listy do kupienia w tej kategorii
   getCategoriesSummary: function () {
     const todos = this.getData('todos');
-
     const summary = todos.reduce(function (acc, curr, i, arr) {
       let name = curr.category;
       if (!acc.hasOwnProperty(name)) {
@@ -182,21 +188,16 @@ const store = {
   // funkcja zwraca listę obiektów o strukturze: { name: string, count: number }, gdzie
   // name to nazwa sklepu, a count to liczba produktów z listy do kupienia w tym sklepie
   getShopsSummary: function () {
-
-    let todos = this.getData('todos');
+    const todos = this.getData('todos');
     const summary = todos.reduce(function (acc, curr, i, arr) {
-      for (name of shops) {
-
+      for (name of curr.shops) {
+        if (!acc.hasOwnProperty(name)) {
+          acc[name] = 0;
+        }
+        acc[name]++;
       }
-      let name = curr.shops.toString();
-      if (!acc.hasOwnProperty(name)) {
-        acc[name] = 0;
-      }
-      acc[name]++;
       return acc;
     }, {});
-
-    console.log(summary);
 
     const summaryCounted = Object.keys(summary).map(k => {
       return {
@@ -204,7 +205,6 @@ const store = {
         count: summary[k]
       };
     });
-
     return summaryCounted;
     // optumalnie należy najpierw należy przefiltrować tablicę, następnie ją zredukować do obiektu
     // potem wykorzystać funkcję przetwarzania obiektów by zmapować entries, a następnie posortować listę
@@ -216,7 +216,11 @@ const store = {
   // zwróć listę stringów (nazw produktów), które są do kupienia w danym slepie
   // listę posortuj alfabetycznie
   getItemNamesContainingShop: function (shop) {
-    return this.getData('todos')
+    const todos = this.getData('todos');
+    const shopList = todos.filter(x => x.shops.some(y => y === shop));
+    return shopList.map(x => {
+      return x.name
+    }).sort((n1, n2) => n1.localeCompare(n2));
     // filter
     // map
   },
