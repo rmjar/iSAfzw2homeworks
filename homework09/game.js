@@ -2,6 +2,9 @@ class Game {
     constructor() {
         this.gameContainer = document.getElementById('game');
         this.cross = new Cross();
+        this.enemies = new EnemiesList(this);
+    }
+    init() {
         this.gameContainer.addEventListener('mousemove',
             (event) => {
                 this.cross.update(event.offsetX, event.offsetY);
@@ -11,16 +14,13 @@ class Game {
                 this.cross.update(event.offsetX, event.offsetY);
                 const hit = this.enemies.checkCollissions(this.cross.x, this.cross.y);
                 if (!hit) {
-                    this.enemies.appendEnemy();
-                } else {
-                    if (!this.enemies.exist()) {
-                        alert("Game over!")
-                    }
+                    this.enemies.append();
+                } else if (!this.enemies.exist()) {
+                    alert("Game over!")
                 }
             });
-        this.enemies = new EnemiesList(this);
-        this.enemies.appendEnemy(0);
-        this.enemies.appendEnemy(0);
+        this.enemies.append(0);
+        this.enemies.append(0);
     }
 }
 
@@ -82,16 +82,12 @@ class RoundEnemy extends Enemy {
 
 class EnemiesList {
     constructor(game) {
-        this.enemies = []
+        this.enemies = [];
         this.game = game;
     }
-    appendEnemy(randomNumber = -1) {
-        const enemyTypesNumber = 4;
-        if (randomNumber === -1) {
-            randomNumber = Math.floor(Math.random() * enemyTypesNumber);
-        }
+    new(type) {
         let enemy;
-        switch (randomNumber) {
+        switch (type) {
             case 0:
                 enemy = new Enemy();
                 break;
@@ -103,14 +99,22 @@ class EnemiesList {
                 break;
             case 3:
                 enemy = new RoundEnemy();
-                break;
         }
+        return enemy;
+    }
+    append(randomNumber = -1) {
+        const enemyTypesNumber = 4;
+        if (randomNumber === -1) {
+            randomNumber = Math.floor(Math.random() * enemyTypesNumber);
+        }
+        const enemy = this.new(randomNumber)
         this.enemies.push(enemy);
         this.game.gameContainer.appendChild(enemy.enemyElement);
     }
     checkCollissions(x, y) {
         const foundEnemy = this.enemies.find(enemy =>
-            Math.abs(enemy.x - x) < enemy.width && Math.abs(enemy.y - y) < enemy.height);
+            Math.abs(enemy.x - x) < enemy.width / 2 &&
+            Math.abs(enemy.y - y) < enemy.height / 2);
         if (foundEnemy) {
             this.enemies.splice(this.enemies.indexOf(foundEnemy), 1);
             this.game.gameContainer.removeChild(foundEnemy.enemyElement);
@@ -118,10 +122,10 @@ class EnemiesList {
         }
         return false;
     }
-    
     exist() {
         return !!this.enemies.length;
     }
 }
 
 const game = new Game();
+game.init();
