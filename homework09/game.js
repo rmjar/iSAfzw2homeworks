@@ -1,8 +1,9 @@
 class Game {
     constructor() {
         this.gameContainer = document.getElementById('game');
+        this.enemiesContainer = document.getElementById('enemies');
         this.cross = new Cross();
-        this.enemies = new EnemiesList(this);
+        this.enemies = new EnemiesList();
     }
     init() {
         this.gameContainer.addEventListener('mousemove',
@@ -18,10 +19,23 @@ class Game {
                 } else if (!this.enemies.exist()) {
                     alert("Game over!")
                 }
+                this.render();
             });
         this.enemies.append(0);
         this.enemies.append(0);
+        this.render();
+
     }
+    clear() {
+        while (this.enemiesContainer.hasChildNodes()) {
+            this.enemiesContainer.removeChild(this.enemiesContainer.firstChild);
+        }
+    }
+    render() {
+        this.clear();
+        this.enemies.enemies.forEach(enemy => this.enemiesContainer.appendChild(enemy.enemyElement));
+    }
+
 }
 
 class Cross {
@@ -81,11 +95,10 @@ class RoundEnemy extends Enemy {
 }
 
 class EnemiesList {
-    constructor(game) {
+    constructor() {
         this.enemies = [];
-        this.game = game;
     }
-    new(type) {
+    addNewEnemy(type) {
         let enemy;
         switch (type) {
             case 0:
@@ -107,17 +120,16 @@ class EnemiesList {
         if (randomNumber === -1) {
             randomNumber = Math.floor(Math.random() * enemyTypesNumber);
         }
-        const enemy = this.new(randomNumber)
+        const enemy = this.addNewEnemy(randomNumber)
         this.enemies.push(enemy);
-        this.game.gameContainer.appendChild(enemy.enemyElement);
     }
     checkCollissions(x, y) {
         const foundEnemy = this.enemies.find(enemy =>
             Math.abs(enemy.x - x) < enemy.width / 2 &&
             Math.abs(enemy.y - y) < enemy.height / 2);
+        console.log(foundEnemy);
         if (foundEnemy) {
             this.enemies.splice(this.enemies.indexOf(foundEnemy), 1);
-            this.game.gameContainer.removeChild(foundEnemy.enemyElement);
             return true;
         }
         return false;
