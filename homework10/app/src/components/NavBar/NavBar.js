@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Basket from './../Basket';
+import "./NavBar.css";
 
 class NavBar extends Component {
 
@@ -8,7 +9,7 @@ class NavBar extends Component {
         return <div>
             <Link to="/contact">Contact</Link>
             <Link to="/products">Products</Link>
-            <Basket />
+            <Basket className='basket' />
         </div>;
     }
 }
