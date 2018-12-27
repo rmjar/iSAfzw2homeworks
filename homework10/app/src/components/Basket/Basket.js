@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import products from './../../products';
 class Basket extends Component {
 
     renderOptions() {
         const randomProducts = { "": "" };
-        const productsCount = products.length;
         for (let i = 0; i < 100; i++) {
             const idx = Math.floor(Math.random() * 10);
             const { name } = products[idx];

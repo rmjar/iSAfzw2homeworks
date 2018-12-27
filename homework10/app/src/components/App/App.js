@@ -26,7 +26,7 @@ class App extends Component {
             companyAddress={'Warszawa, ul. Marszałkowska 1'}
             companyPhone={'+48 22 456 01 01'}
             companyEmail={'mojSklep@info.Share'}
-            mapProps = {this.locationParams}
+            mapProps={this.locationParams}
             {...props} />} />
           <Route path="/products/:uuid?" component={Products} />
         </Fragment>
