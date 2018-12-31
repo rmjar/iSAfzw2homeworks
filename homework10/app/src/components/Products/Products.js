@@ -61,7 +61,7 @@ class Products extends Component {
     getProductByUuid = uuid => products.find(p => p.uuid === uuid);
 
     renderProduct(product) {
-        const { uuid, name, category, quantity, promotion, price, imageUrl, description } = product;
+        const { uuid, name, category, quantity, promotion } = product;
         return <div key={uuid}><li><Link key={uuid} to={`/products/${uuid}`}>{`${name}`} </Link>{`,  ${category},  ` +
             `${promotion ? " promotion " : " "}`}
             <button disabled={quantity === 0 ? "disabled" : ""} onClick={this.handleBuy}>
@@ -72,7 +72,7 @@ class Products extends Component {
     }
 
     renderSingleProduct(product) {
-        const { uuid, name, category, quantity, promotion, price, imageUrl, description } = product;
+        const {  name, category, quantity, promotion, price, imageUrl, description } = product;
         return <div>
             <h2>{name}, {category}</h2>
             <img src={imageUrl} alt="" />
@@ -104,7 +104,7 @@ class Products extends Component {
 
     render() {
         const { match: { params: { uuid } } } = this.props;
-        const { search, category, sortAsc, showAll, showDiscounts } = this.state;
+        const { sortAsc, showDiscounts } = this.state;
         return (
             <Fragment>
                 <h2>Products</h2>
