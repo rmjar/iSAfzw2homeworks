@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import './App.css';
+//import './App.css';
 
 import NavBar from './../NavBar';
 import Contact from './../Contact';
