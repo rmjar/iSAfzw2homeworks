@@ -1,13 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import products from './../../products';
 import { Link } from "react-router-dom";
 
-const categories = products.reduce((acc, product) => {
-    if (!acc.includes(product.category)) {
-        acc.push(product.category);
-    }
-    return acc;
-}, ['']);
+import { connect } from 'react-redux';
+import { handleBuy } from '../../actions/postActions'
+
 
 class Products extends Component {
     constructor(props) {
@@ -45,26 +41,24 @@ class Products extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.props, this.state);
     }
 
-    handleBuy = (event) => {
-        event.preventDefault();
-        console.log(this.props, this.state);
+    handleBuyClick = (productUuid) => {
+        this.props.handleBuy(productUuid);
     }
 
-    filterByUuid = ({ productUuid }) => {
+    filterByUuid = (productUuid) => {
         const { match: { params: { uuid } } } = this.props;
         return productUuid === uuid || uuid === undefined;
     }
 
-    getProductByUuid = uuid => products.find(p => p.uuid === uuid);
+    getProductByUuid = uuid => this.props.products.find(p => p.uuid === uuid);
 
-    renderProduct(product) {
+    renderProduct = (product) => {
         const { uuid, name, category, quantity, promotion } = product;
         return <div key={uuid}><li><Link key={uuid} to={`/products/${uuid}`}>{`${name}`} </Link>{`,  ${category},  ` +
-            `${promotion ? " promotion " : " "}`}
-            <button disabled={quantity === 0 ? "disabled" : ""} onClick={this.handleBuy}>
+            `${promotion ? " promotion " : " "}, items: ${quantity}`}
+            <button disabled={quantity === 0 ? "disabled" : ""} onClick={() => this.handleBuyClick(uuid)}>
                 {quantity === 0 ? "Sold out" : "Buy"}
             </button>
         </li>
@@ -72,7 +66,7 @@ class Products extends Component {
     }
 
     renderSingleProduct(product) {
-        const {  name, category, quantity, promotion, price, imageUrl, description } = product;
+        const { name, category, quantity, promotion, price, imageUrl, description } = product;
         return <div>
             <h2>{name}, {category}</h2>
             <img src={imageUrl} alt="" />
@@ -91,7 +85,7 @@ class Products extends Component {
                 <input type="text" onChange={this.handleChange} name="search" value={search} placeholder="search product..." />
                 <label htmlFor="category"> category:</label>
                 <select name="category" onChange={this.handleChange} value={category} >
-                    {categories.map((category) => <option value={category} key={category}>{category}</option>)}
+                    {this.props.categories.map((category) => <option value={category} key={category}>{category}</option>)}
                 </select>
                 <label htmlFor="showAll"> only available:</label>
                 <input type="checkbox" onChange={this.handleChecked} name="showAll" checked={showAll} />
@@ -103,8 +97,9 @@ class Products extends Component {
     }
 
     render() {
-        const { match: { params: { uuid } } } = this.props;
+        const { match: { params: { uuid } }, products: prods } = this.props;
         const { sortAsc, showDiscounts } = this.state;
+        console.log(this.props)
         return (
             <Fragment>
                 <h2>Products</h2>
@@ -112,7 +107,7 @@ class Products extends Component {
                     this.renderForm()
                 }
                 {
-                    products
+                    prods
                         .filter(({ name, category, quantity, promotion }) => {
                             const { search, category: cat, showAll } = this.state;
                             return ((name.toLowerCase().includes(search.toLowerCase()) || (!search)) &&
@@ -122,7 +117,7 @@ class Products extends Component {
                         .sort(({ name: nameA }, { name: nameB }) => {
                             return sortAsc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA)
                         })
-                        .map(this.renderProduct.bind(this))
+                        .map(this.renderProduct)
                 }
                 {
                     uuid &&
@@ -136,4 +131,24 @@ class Products extends Component {
     }
 }
 
-export default Products;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        basket: state.basket,
+        products: state.products,
+        categories: state.products.reduce((acc, product) => {
+            if (!acc.includes(product.category)) {
+                acc.push(product.category);
+            }
+            return acc;
+        }, ['']),
+        ...ownProps
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleBuy: uuid => { dispatch(handleBuy(uuid)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

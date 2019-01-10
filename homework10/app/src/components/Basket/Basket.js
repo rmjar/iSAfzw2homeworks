@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
-import products from './../../products';
+
+import { connect } from 'react-redux';
+
 class Basket extends Component {
 
+
+
     renderOptions() {
-        const randomProducts = { "": "" };
-        for (let i = 0; i < 100; i++) {
-            const idx = Math.floor(Math.random() * 10);
-            const { name } = products[idx];
-            randomProducts[name] = randomProducts[name] ? randomProducts[name] + 1 : 1;
-        }
-        return Object.entries(randomProducts);
+        const { basket } = this.props;
+        return basket.map(item => {
+            return <option value={item['name']} key={item['name']}>
+                {item['name']} {item['name'] !== '' ? ', items: ' + item['quantity'] : ''}
+                {item['name'] !== '' ? ', total price: ' + item['quantity'] * item['itemPrice'] : ''}
+            </option>
+        })
     }
 
     render() {
         return <span>
             <select name='basket' value='basket' readOnly>
-                {this.renderOptions().map((product) => <option value={product[0]} key={product[0]}>
-                    {product[0]} {product[0] !== "" ? ', items: ' : ''}{product[1]}</option>)}
+                {this.renderOptions()}
             </select>
         </span>;
     }
 }
 
-export default Basket;
+const mapStateToProps = (state) => {
+    return {
+        basket: state.basket
+    }
+}
+
+export default connect(mapStateToProps)(Basket);
