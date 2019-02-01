@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 
-import WeatherParamForm from '../WeatherParamForm'
-import PresentWeather from '../PresentWeather'
+import WeatherParamForm from '../WeatherParamForm';
+import PresentWeather from '../PresentWeather';
 
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       city: '',
     }
@@ -15,7 +15,7 @@ class App extends Component {
   onUpdate = (e) => {
     this.setState({
       city: e.target.value
-    })
+    });
   }
 
 
