@@ -84,7 +84,7 @@ class PresentWeather extends Component {
         <Fragment>
           {
             city &&
-            <PresentWeatherDate onChange={this.onUpdateDate} dates={dates} />
+            <PresentWeatherDate onChange={this.onUpdateDate} dates={dates} city={city} />
           }
           {
             date && city &&
