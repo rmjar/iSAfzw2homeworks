@@ -10,7 +10,8 @@ class AppBar extends Component {
         this.state = {
             clickHandler: props.handleClick,
             isUser: false,
-            userUID: ''
+            userUID: '',
+            searchText: '',
         }
     }
 
@@ -29,10 +30,10 @@ class AppBar extends Component {
     componentDidMount() {
         this.unsubscribeAuth = auth().onAuthStateChanged((user) => {
             if (user) {
-                this.setState({ isUser: true, userUID: user.uid })
-                this.state.clickHandler({ isUser: this.state.isUser, userUID: this.state.userUID });
+                this.setState({ isUser: true, userUID: user.uid, userName: user.displayName })
+                this.state.clickHandler({ isUser: this.state.isUser, userUID: this.state.userUID, userName: this.state.userName });
             } else {
-                this.state.clickHandler({ isUser: this.state.isUser, userUID: this.state.userUID });
+                this.state.clickHandler({ isUser: this.state.isUser, userUID: this.state.userUID, userName: this.state.userName });
             }
         })
     }
@@ -44,15 +45,35 @@ class AppBar extends Component {
         }
     }
 
+    handleClick = (e) => {
+        e.preventDefault();
+    }
+
+    handleChange = (event) => {
+        const { value, name } = event.target;
+
+        this.setState({
+            [name]: value,
+        });
+    }
+
     render() {
-        const { isUser } = this.state;
+        const { isUser, searchText, userName } = this.state;
         return (
             <div>
+                <form style={{ display: 'inline-block' }}>
+                    <input type='text' name='searchText' value={searchText} onChange={this.handleChange} />
+                    <button type='button' onClick={this.handleClick}> Search </button>
+                </form>
                 {!isUser && <button type="button" onClick={this.signInWithGoogle}>Sign in</button>}
-                {isUser && <button type="button" onClick={this.signOut}>Sign out</button>}
-            </div>
-        )
+                {isUser &&
+                    <span>
+                         Użytkownik: {userName} 
+                        <button type="button" onClick={this.signOut}>Sign out</button>
+                </span>}
+            </div >
+            )
+        }
     }
-}
-
+    
 export default AppBar;

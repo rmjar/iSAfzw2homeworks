@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Route, Router } from "react-router";
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import AppBar from '../AppBar'
 import RecipesList from '../RecipesList';
+import Recipe from '../Recipe';
 
 const history = createBrowserHistory();
 
@@ -26,19 +27,20 @@ class App extends Component {
   }
 
   render() {
-    const { isUser } = this.state;
+    const { isUser, userUID } = this.state;
 
     return (
-      <div className="App">
-        <AppBar handleClick={this.handleSignInClick} />
-
+      <div>
         <Router history={history}>
-          {
-            !isUser ? <Route path="/" render={() => <div>Zaloguj się</div>} /> : <Route path="/" render={() => <div>Zalogowany</div>} />
-          }
+          <Fragment>
+            <Route path='/' render={props => <AppBar handleClick={this.handleSignInClick} {...props} />} />
+            {
+              !isUser ? <Route path='/' render={() => <div>Zaloguj się</div>} /> : <Route path="/" render={() => <div>Zalogowany</div>} />
+            }
+            <Route exact path='/' render={props => <RecipesList isUser={isUser} userUID={userUID} {...props} />} />
+            <Route path='/recipe/id?' render={props => <Recipe isUser={isUser} userUID={userUID} {...props} />} />
+          </Fragment>
         </Router>
-
-        <RecipesList isUser={isUser} />
       </div>
     );
   }

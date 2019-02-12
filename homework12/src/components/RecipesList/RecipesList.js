@@ -8,6 +8,7 @@ class RecipesList extends Component {
         super(props);
         this.state = {
             isUser: props.isUser,
+            userUID: props.userUID,
         }
     }
 
@@ -47,9 +48,17 @@ class RecipesList extends Component {
     };
 
 
+    handleClick = (e) => {
+        e.preventDefault();
+    }
+
+    handleEditRecipeClick = (e) => {
+        e.preventDefault();
+    }
+
     render() {
         console.log(this.state)
-        const { isUser } = this.state;
+        const { isUser, userUID } = this.state;
         const { recipes = null } = this.state;
         return (
             <div>
@@ -57,10 +66,15 @@ class RecipesList extends Component {
                     {recipes.map(recipe =>
                         <li style={{ "list-style-type": "none" }} key={recipe.id}>
                             <div>{recipe.name}</div>
-                            <div>{recipe.recipe}</div> 
+                            <div>{recipe.recipe}</div>
                             <div>Added: {moment(recipe.addedOn.toDate().toString()).calendar()}, by: {recipe.userUID}</div>
+                            {/* <ul>
+                                {recipe.comments && recipe.comments.map(comment => <li>{comment}</li>)}
+                            </ul> */}
+                            <button type='button' onClick={this.handleEditRecipeClick}>Edit</button>
                         </li>)}
                 </ul>}
+                <button type='button' onClick={this.handleClick}>Add</button>
             </div>
         )
     }
