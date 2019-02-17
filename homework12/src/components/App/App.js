@@ -38,7 +38,7 @@ class App extends Component {
               !isUser ? <Route path='/' render={() => <div>Zaloguj się</div>} /> : <Route path="/" render={() => <div>Zalogowany</div>} />
             }
             <Route exact path='/' render={props => <RecipesList isUser={isUser} userUID={userUID} {...props} />} />
-            <Route path='/recipe/id?' render={props => <Recipe isUser={isUser} userUID={userUID} {...props} />} />
+            <Route path='/recipe/:id?' render={props => <Recipe isUser={isUser} userUID={userUID} {...props} />} />
           </Fragment>
         </Router>
       </div>

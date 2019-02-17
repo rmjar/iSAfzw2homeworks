@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { firestore } from '../../firebase/fbConfig';
 import moment from 'moment';
+
+import { Recipe } from '../Recipe';
 
 class RecipesList extends Component {
     constructor(props) {
@@ -52,8 +55,9 @@ class RecipesList extends Component {
         e.preventDefault();
     }
 
-    handleEditRecipeClick = (e) => {
+    handleEditRecipeClick = (id, e) => {
         e.preventDefault();
+        this.props.history.push(`/recipe/${id}`)
     }
 
     render() {
@@ -64,14 +68,14 @@ class RecipesList extends Component {
             <div>
                 {recipes && <ul>
                     {recipes.map(recipe =>
-                        <li style={{ "list-style-type": "none" }} key={recipe.id}>
+                        <li style={{ "listStyleType": "none" }} key={recipe.id}>
                             <div>{recipe.name}</div>
                             <div>{recipe.recipe}</div>
                             <div>Added: {moment(recipe.addedOn.toDate().toString()).calendar()}, by: {recipe.userUID}</div>
-                            {/* <ul>
+                            {/* { comments && <ul>
                                 {recipe.comments && recipe.comments.map(comment => <li>{comment}</li>)}
-                            </ul> */}
-                            <button type='button' onClick={this.handleEditRecipeClick}>Edit</button>
+                            </ul>} */}
+                            <button type='button' onClick={(e) => this.handleEditRecipeClick(recipe.id, e)}>Edit</button>
                         </li>)}
                 </ul>}
                 <button type='button' onClick={this.handleClick}>Add</button>
@@ -80,4 +84,4 @@ class RecipesList extends Component {
     }
 }
 
-export default RecipesList;
+export default withRouter(RecipesList);
