@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { firestore } from '../../firebase/fbConfig';
 import moment from 'moment';
-
-import { Recipe } from '../Recipe';
 
 class RecipesList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isUser: props.isUser,
-            userUID: props.userUID,
+            recipes: [],
         }
     }
 
@@ -19,13 +16,12 @@ class RecipesList extends Component {
 
     getRecipes = () => {
         const dbRef = firestore.collection("recipes");
-        if (this.state.isUser) {
+        if (this.props.searchText) {
             this.unsubscribeFromFirestore = dbRef
                 .onSnapshot(snapshot => {
                     const recipes = snapshot.docs.map(
-                        doc => ({ id: doc.id, ...doc.data() })
-
-                    );
+                        doc => ({ id: doc.id, ...doc.data() }))
+                        .filter(recipe => recipe.name.toLowerCase().includes(this.props.searchText.toLowerCase()));
                     this.setState({ recipes });
                 });
         } else {
@@ -46,39 +42,43 @@ class RecipesList extends Component {
         this.getRecipes()
     };
 
+    componentDidUpdate = (prevProps) => {
+        if (this.props.searchText !== prevProps.searchText) {
+            this.getRecipes();
+        }
+    }
+
     componentWillUnmount = () => {
         this.unsubscribeFromFirestore();
     };
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.searchText !== prevState.searchText) {
+            return { searchText: nextProps.searchText };
+        }
+        else return null;
+    }
 
     handleClick = (e) => {
         e.preventDefault();
+        this.props.history.push('/addrecipe');
     }
 
-    handleEditRecipeClick = (id, e) => {
-        e.preventDefault();
-        this.props.history.push(`/recipe/${id}`)
-    }
 
     render() {
-        console.log(this.state)
-        const { isUser, userUID } = this.state;
+        const { isUser, userUID, userName } = this.props;
         const { recipes = null } = this.state;
         return (
             <div>
                 {recipes && <ul>
                     {recipes.map(recipe =>
                         <li style={{ "listStyleType": "none" }} key={recipe.id}>
-                            <div>{recipe.name}</div>
+                            <Link key={recipe.id} to={`/recipe/${recipe.id}`}>{recipe.name}</Link>
                             <div>{recipe.recipe}</div>
-                            <div>Added: {moment(recipe.addedOn.toDate().toString()).calendar()}, by: {recipe.userUID}</div>
-                            {/* { comments && <ul>
-                                {recipe.comments && recipe.comments.map(comment => <li>{comment}</li>)}
-                            </ul>} */}
-                            <button type='button' onClick={(e) => this.handleEditRecipeClick(recipe.id, e)}>Edit</button>
+                            <div>Added: {moment(recipe.addedOn.toDate().toString()).calendar()}, by: {recipe.userName}</div>
                         </li>)}
                 </ul>}
-                <button type='button' onClick={this.handleClick}>Add</button>
+                {isUser && <button type='button' onClick={this.handleClick}>Add</button>}
             </div>
         )
     }

@@ -9,8 +9,10 @@ class AppBar extends Component {
         super(props);
         this.state = {
             clickHandler: props.handleClick,
+            filterHandler: props.handleFilter,
             isUser: false,
             userUID: '',
+            userName:'',
             searchText: '',
         }
     }
@@ -47,11 +49,11 @@ class AppBar extends Component {
 
     handleClick = (e) => {
         e.preventDefault();
+        this.state.filterHandler(this.state.searchText);
     }
 
     handleChange = (event) => {
         const { value, name } = event.target;
-
         this.setState({
             [name]: value,
         });

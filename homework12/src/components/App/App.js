@@ -5,6 +5,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import AppBar from '../AppBar'
 import RecipesList from '../RecipesList';
 import Recipe from '../Recipe';
+import AddNewRecipe from '../Recipe/AddNewRecipe';
 
 const history = createBrowserHistory();
 
@@ -13,32 +14,64 @@ class App extends Component {
     super(props);
     this.state = {
       isUser: false,
-      userUID: ''
+      userUID: '',
+      userName: '',
+      searchText: '',
     }
   }
 
-
   handleSignInClick = (params) => {
-    console.log(params)
-    this.setState({
-      isUser: params.isUser,
-      userUID: params.userUID
+    this.setState(prevState => {
+      return {
+        isUser: params.isUser,
+        userUID: params.userUID,
+        userName: params.userName,
+      }
+    })
+  }
+
+  handleFilter = (searchText) => {
+    this.setState(prevState => {
+      return {
+        searchText
+      }
     })
   }
 
   render() {
-    const { isUser, userUID } = this.state;
-
+    const { isUser, userUID, userName, searchText } = this.state;
     return (
       <div>
         <Router history={history}>
           <Fragment>
-            <Route path='/' render={props => <AppBar handleClick={this.handleSignInClick} {...props} />} />
-            {
-              !isUser ? <Route path='/' render={() => <div>Zaloguj się</div>} /> : <Route path="/" render={() => <div>Zalogowany</div>} />
-            }
-            <Route exact path='/' render={props => <RecipesList isUser={isUser} userUID={userUID} {...props} />} />
-            <Route path='/recipe/:id?' render={props => <Recipe isUser={isUser} userUID={userUID} {...props} />} />
+            <Route path='/'
+              render={props => <AppBar
+                handleFilter={this.handleFilter}
+                handleClick={this.handleSignInClick}
+                {...props} />} />
+
+            <Route exact path='/'
+              render={props => <RecipesList
+                isUser={isUser}
+                userUID={userUID}
+                userName={userName}
+                searchText={searchText}
+                {...props} />} />
+
+            <Route path='/recipe/:id?'
+              render={props => <Recipe
+                isUser={isUser}
+                userUID={userUID}
+                userName={userName}
+                {...props} />} />
+
+            <Route path='/addrecipe'
+              render={props => <AddNewRecipe
+                isUser={isUser}
+                userUID={userUID}
+                userName={userName}
+                {...props} />} />
+
           </Fragment>
         </Router>
       </div>
