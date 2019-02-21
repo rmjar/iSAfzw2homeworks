@@ -16,7 +16,7 @@ class RecipesList extends Component {
 
     getRecipes = () => {
         const dbRef = firestore.collection("recipes");
-        if (this.props.searchText) {
+        if (this.props.searchText && this.props.searchText.length >= 3) {
             this.unsubscribeFromFirestore = dbRef
                 .onSnapshot(snapshot => {
                     const recipes = snapshot.docs.map(
@@ -66,7 +66,7 @@ class RecipesList extends Component {
 
 
     render() {
-        const { isUser, userUID, userName } = this.props;
+        const { isUser } = this.props;
         const { recipes = null } = this.state;
         return (
             <div>

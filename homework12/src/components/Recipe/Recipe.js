@@ -91,7 +91,7 @@ class Recipe extends Component {
     }
 
     render() {
-        const { isUser, userUID, userName } = this.props;
+        const { isUser } = this.props;
         const { recipe = null } = this.state;
         const { comments = [] } = this.state.recipe || {};
         const { recipeName = null, recipeContent = null, addComment = false, comment = null } = this.state;

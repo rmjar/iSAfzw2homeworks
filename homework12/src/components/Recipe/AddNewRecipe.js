@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
 import { firestore } from '../../firebase/fbConfig';
-import moment from 'moment';
-
 
 class AddNewRecipe extends Component {
     constructor(props) {
